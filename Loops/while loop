@@ -1,0 +1,18 @@
+num = 0
+print("Using while loop for even numbers:")
+while num < 10:
+    if num % 2 == 0:
+        print(num)
+    num += 1
+
+# Nested while loop 
+print("Using nested while loop:")
+i = 1
+while i <= 3:
+    j = 1
+    while j <= i:
+        print("*", end=" ")
+        j += 1
+    print()  
+    i += 1
+

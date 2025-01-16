@@ -1,0 +1,10 @@
+fruits = ["apple", "banana", "cherry"]
+print("Using for loop to iterate over list:")
+for fruit in fruits:
+    print(fruit)
+
+# Nested for loop 
+print("Using nested for loop:")
+for i in range(1, 4):
+    for j in range(1, 4):
+        print(f"{i} x {j} = {i * j}")
