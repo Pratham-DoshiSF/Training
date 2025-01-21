@@ -1,0 +1,1 @@
+SELECT * FROM departments LIMIT 1 offset 2 ;
