@@ -1,1 +1,0 @@
-ALTER TABLE departments ADD sub_department VARCHAR(50);

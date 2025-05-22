@@ -1,1 +1,0 @@
-SELECT * FROM departments ORDER BY departmentid DESC ;
