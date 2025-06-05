@@ -1,12 +1,7 @@
 from langchain_tavily import TavilySearch
-from langchain.agents import Tool
+from langchain_core.tools import tool
 
+@tool
 def tavily_search_tool_func(query: str) -> str:
-    """Web search tool using Tavily."""
+    """Search the web for up-to-date information."""
     return TavilySearch(max_results=5, topic="general").invoke(query)
-
-tavily_tool = Tool(
-    name="Search",
-    func=tavily_search_tool_func,
-    description="Useful for general-purpose web searches."
-)

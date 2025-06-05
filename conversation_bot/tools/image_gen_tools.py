@@ -1,16 +1,15 @@
-from langchain.agents import Tool
+from langchain_core.tools import tool
 from pathlib import Path
 import uuid
 import base64
 from langchain_core.messages import HumanMessage
-
 from conversation_bot.utils_function.utils import get_image_llm
 
 image_llm = get_image_llm()
-
 OUTPUT_DIR = Path("generated_images")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+@tool
 def image_gen_func(query: str) -> str:
     """Generate image and return image path (not base64)."""
     enhanced_query = (
@@ -34,22 +33,27 @@ def image_gen_func(query: str) -> str:
     if not image_block:
         return "ERROR: No image generated."
 
+    # Decode base64 image content
     image_url = image_block["image_url"]["url"]
-    image_base64 = image_url.split(",")[-1]
-    image_bytes = base64.b64decode(image_base64)
+    if not image_url.startswith("data:image"):
+        return "ERROR: Unexpected image format."
 
-    # Save image
+    image_base64 = image_url.split(",")[-1]
+    try:
+        image_bytes = base64.b64decode(image_base64)
+    except base64.binascii.Error:
+        return "ERROR: Failed to decode image."
+
     image_id = f"{uuid.uuid4().hex}.png"
     image_path = OUTPUT_DIR / image_id
-
     with open(image_path, "wb") as f:
         f.write(image_bytes)
 
-    return image_path
+    return str(image_path)
 
-image_tool = Tool(
-    name="ImageGen",
-    func=image_gen_func,
-    description="Generates an image based on a textual description."
-)
-image_gen_func("image of cat and dog")
+
+# Example usage
+# if __name__ == "__main__":
+#     result = image_gen_func("image of cat and dog")
+#     print(result)
+

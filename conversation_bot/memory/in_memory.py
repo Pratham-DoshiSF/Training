@@ -1,6 +1,4 @@
-from langchain.memory import ConversationBufferMemory
+from langgraph.checkpoint.memory import MemorySaver
 
-conversation_memory = ConversationBufferMemory(
-    memory_key="chat_history",
-    return_messages=True
-)
+checkpointer = MemorySaver()
+store = MemorySaver()
