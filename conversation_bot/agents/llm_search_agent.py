@@ -3,7 +3,6 @@ from conversation_bot.utils_function.utils import get_llm
 from conversation_bot.tools.llm_search_tools import llm_based_search_func
 from conversation_bot.state_schema.graph_state import agentState
 from conversation_bot.prompts.feedback_memory_prompt import general_prompt
-from conversation_bot.memory.local_memory import save_message
 
 llm = get_llm()
 
@@ -29,7 +28,6 @@ def llm_agent(state:agentState) -> agentState:
         })
     print("-----------------------------------")
     print(state["agent_used"])
-    save_message(state["user_id"], "user" , state["query"])
-    save_message(state["user_id"] , "assistant" , result["messages"][-1].content)
+
     return {"messages" : [result["messages"][-1].content]}
      

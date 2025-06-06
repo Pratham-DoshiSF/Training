@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit.logger import get_logger
 from conversation_bot.workflow.workflow import app
-from conversation_bot.memory.local_memory import retrieve_last_5_pairs
 from langchain.schema import HumanMessage
 from langgraph.types import Command, Interrupt
 
@@ -135,7 +134,6 @@ else:
         stream = app.stream(
             {
                 "query": user_input,
-                "messages": retrieve_last_5_pairs(USER_ID),
                 "agent_used": [],
                 "user_id": USER_ID,
             },

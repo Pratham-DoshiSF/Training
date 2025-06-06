@@ -29,7 +29,6 @@ def web_agent(state:agentState) -> agentState:
                 ]
             })
 
-    save_message(state["user_id"] , "user" , state["query"])
-    save_message(state["user_id"] , "ai" , result["messages"][-1].content)
+
     # state["messages"].append(result["messages"][-1])
     return {"messages" : [result["messages"][-1]]}
