@@ -1,4 +1,6 @@
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.mongodb import MongoDBSaver
+from pymongo import MongoClient
 
-checkpointer = MemorySaver()
-store = MemorySaver()
+
+client = MongoClient("mongodb+srv://pratham:prem2003@cluster0.pw1dc.mongodb.net/")
+Checkpointer = MongoDBSaver(client)
