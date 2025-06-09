@@ -1,21 +1,20 @@
 from langgraph.prebuilt import create_react_agent
-from conversation_bot.tools.web_search_tools import tavily_search_tool_func
+from conversation_bot.tools.web_search_tool import tavily_search_tool_func
 from conversation_bot.utils_function.utils import get_llm
 from conversation_bot.prompts.feedback_memory_prompt import general_prompt
-from conversation_bot.memory.local_memory import save_message
 from conversation_bot.state_schema.graph_state import agentState
-
+from conversation_bot.tools.human_feedback_tool import human_feedback
+from conversation_bot.prompts.system_prompt import system_prompt
 
 llm = get_llm()
 
-web_search_agent = create_react_agent(model=llm, tools=[tavily_search_tool_func], name="web_expert")
+web_search_agent = create_react_agent(model=llm, tools=[tavily_search_tool_func , human_feedback], name="web_expert" , prompt=system_prompt)
 
 def web_agent(state:agentState) -> agentState:
 
     feedback = state["human_feedback"] if "human_feedback" in state else ["No feedback yey"]
 
     prompt_formated = general_prompt.format(
-        feedback = feedback ,
         query = state["query"] ,
         messages = state["messages"],
     )
@@ -30,5 +29,4 @@ def web_agent(state:agentState) -> agentState:
             })
 
 
-    # state["messages"].append(result["messages"][-1])
     return {"messages" : [result["messages"][-1]]}
