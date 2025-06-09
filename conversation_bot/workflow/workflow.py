@@ -31,3 +31,9 @@ graph.add_edge("llm generation" , END)
 graph.add_edge("image generation" , END)
 
 app = graph.compile(checkpointer=checkpointer )
+
+class conversation_bot():
+
+    def __init__(self):
+        # self.llm =
+        pass

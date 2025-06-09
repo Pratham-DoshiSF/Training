@@ -6,11 +6,13 @@ from conversation_bot.prompts.feedback_memory_prompt import image_prompt
 from conversation_bot.tools.human_feedback_tool import human_feedback
 from conversation_bot.prompts.system_prompt import system_prompt
 
-llm = get_llm()
 
-image_gen_agent = create_react_agent(model=llm, tools=[image_gen_func , human_feedback], name="image_gen_expert" , prompt=system_prompt)
+def create_image_agent(llm):
+    
+    return create_react_agent(model=llm, tools=[image_gen_func ], name="image_gen_expert" , prompt=system_prompt)
 
-def image_agent(state:agentState) -> agentState:
+
+def image_agent(state:agentState , image_agent) -> agentState:
 
     prompt_formated = image_prompt.format(
         query = state["query"] ,
@@ -18,7 +20,7 @@ def image_agent(state:agentState) -> agentState:
     )
     
     print(state)
-    result = image_gen_agent.invoke({
+    result = image_agent.invoke({
             "messages": [
                 {
                     "role": "user",

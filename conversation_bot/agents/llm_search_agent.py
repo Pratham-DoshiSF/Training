@@ -6,11 +6,13 @@ from conversation_bot.prompts.feedback_memory_prompt import general_prompt
 from conversation_bot.tools.human_feedback_tool import human_feedback
 from conversation_bot.prompts.system_prompt import system_prompt
 
-llm = get_llm()
 
-llm_search_agent = create_react_agent(model=llm, tools=[llm_based_search_func, human_feedback], name="llm_expert" , prompt=system_prompt)
+def create_llm_agent(llm):
 
-def llm_agent(state:agentState) -> agentState:
+    return create_react_agent(model=llm, tools= [], name="llm_expert" , prompt=system_prompt)
+
+
+def llm_agent(state:agentState , llm_search_agent) -> agentState:
 
 
     prompt_formated = general_prompt.format(
@@ -28,4 +30,3 @@ def llm_agent(state:agentState) -> agentState:
         })
 
     return {"messages" : [result["messages"][-1].content]}
-     
