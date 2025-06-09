@@ -1,6 +1,9 @@
 from langgraph.checkpoint.mongodb import MongoDBSaver
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-client = MongoClient("mongodb+srv://pratham:prem2003@cluster0.pw1dc.mongodb.net/")
+client = MongoClient(os.getenv("MONGO_URI"))
 Checkpointer = MongoDBSaver(client)
