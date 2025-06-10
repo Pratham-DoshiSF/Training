@@ -16,3 +16,4 @@ def extract_image_path(text: str) -> str | None:
     """Extracts file path if it looks like an image path."""
     match = re.search(r"(generated_images/\S+\.png)", text)
     return match.group(1) if match else None
+
