@@ -2,12 +2,12 @@ import os
 from dotenv import load_dotenv
 import re
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_openai import ChatOpenAI
+
 load_dotenv()
 
 def get_llm():
-    # return ChatGoogleGenerativeAI(model=os.getenv("GOOGLE_MODEL"))
-    return ChatOpenAI(model="gpt-4o-mini")
+    return ChatGoogleGenerativeAI(model=os.getenv("GOOGLE_MODEL"))
+    # return ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 def get_image_llm():
     return ChatGoogleGenerativeAI(model=os.getenv("GOOGLE_IMG_MODEL"))
