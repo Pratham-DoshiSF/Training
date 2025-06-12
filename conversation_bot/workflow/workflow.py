@@ -21,7 +21,7 @@ from conversation_bot.prompts.system_prompt_image import image_system_prompt
 
 logger = get_logger("Workflow")
 
-thread_config = {"configurable": {"thread_id": "255"}}
+thread_config = {"configurable": {"thread_id": "2555"}}
 
 instruction = (
     "When generating final answer always return image path without any extras "
@@ -133,12 +133,16 @@ class WorkflowRunner:
     def resume_with_feedback(self, feedback: str):
         try:
             logger.info(f"Resuming with human feedback: {feedback}")
+            # Save the clarified feedback back as the updated query in the config
+            # self.thread_config["configurable"]["query"] = feedback
+
             result = self.app.invoke(Command(resume=feedback), config=self.thread_config)
             return self._handle_result(result)
         except Exception as e:
             logger.error(f"Error resuming with feedback: {e}")
             logger.debug(traceback.format_exc())
             return {"error": str(e)}
+
 
     def check_for_interrupt(self):
         try:

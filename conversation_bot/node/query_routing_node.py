@@ -13,8 +13,9 @@ def get_routing_node(llm):
         try:
             router_chain = router_prompt | llm
             result = router_chain.invoke({"query": state["query"]})
-
+            # logger.info(f"Query for agent to be decided: {state["query"]}")
             logger.info(f"Agent selected by router: {result.content}")
+            print("[QUERY]" , state["query"])
 
             return {"agent_used": [result.content]}
 

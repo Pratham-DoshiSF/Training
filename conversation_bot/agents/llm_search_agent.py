@@ -1,7 +1,7 @@
 from langgraph.prebuilt import create_react_agent
 from conversation_bot.state_schema.graph_state import agentState
 from conversation_bot.prompts.system_prompt import system_prompt_template
-from conversation_bot.utils_function.logger_utility import get_logger  # ✅ Updated path
+from conversation_bot.utils_function.logger_utility import get_logger  
 
 import traceback
 
