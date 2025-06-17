@@ -2,6 +2,7 @@ import traceback
 from PIL import Image
 from langgraph.graph import StateGraph, END
 from langgraph.types import Command
+from pymongo.errors import DocumentTooLarge
 
 from conversation_bot.utils_function.logger_utility import get_logger
 from conversation_bot.state_schema.graph_state import agentState
@@ -20,7 +21,6 @@ from conversation_bot.tools.web_search_tool import tavily_search_tool_func
 
 logger = get_logger("Workflow")
 
-thread_config = {"configurable": {"thread_id": "2555"}}
 
 instruction = (
     "Always use image_gen_tool before answering"
@@ -106,12 +106,13 @@ class workflow:
 
 
 class WorkflowRunner:
-    def __init__(self, workflow, thread_config):
+    def __init__(self, workflow, thread_config , is_streamlit : bool = False):
         try:
             logger.info("Initializing WorkflowRunner...")
             self.workflow = workflow
             self.app = self.workflow.create_graph()
             self.thread_config = thread_config
+            self.is_streamlit = is_streamlit
             logger.info("WorkflowRunner ready.")
         except Exception as e:
             logger.error(f"WorkflowRunner initialization failed: {e}")
@@ -123,10 +124,15 @@ class WorkflowRunner:
             logger.info(f"Handling user query: {query}")
             result = self.app.invoke({"query": query}, config=self.thread_config)
             return self._handle_result(result)
+
+        except DocumentTooLarge as e:
+            logger.error("MongoDB DocumentTooLarge error occurred", exc_info=True)
+            return {"__error__": "Your session is too large to continue. Please refresh the page to start a new one."}
+
         except Exception as e:
             logger.error(f"Error during query handling: {e}")
             logger.debug(traceback.format_exc())
-            return {"error": str(e)}
+            return {"__error__": str(e)}
 
     def resume_with_feedback(self, feedback: str):
         try:
@@ -163,9 +169,10 @@ class WorkflowRunner:
 
             elif last_agent == "image_agent" and "png" in last_message.content:
                 image_path = last_message.content
-                logger.info(f"[🖼️ IMAGE GENERATED] {image_path}")
-                print("[🖼️ IMAGE GENERATED]", image_path)
-                Image.open(image_path).show()
+                logger.info(f"[ IMAGE GENERATED] {image_path}")
+                print("[ IMAGE GENERATED]", image_path)
+                if not self.is_streamlit:
+                    Image.open(image_path).show()
 
             else:
                 logger.info(f"[💬 RESPONSE] {last_message.content}")
@@ -181,9 +188,10 @@ class WorkflowRunner:
 
 # ✅ CLI Runner
 if __name__ == "__main__":
+    thread_config = {"configurable": {"thread_id": "123456"}}
     try:
         wf = workflow()
-        runner = WorkflowRunner(wf, thread_config)
+        runner = WorkflowRunner(wf, thread_config )
 
         while True:
             query = input("Enter your query (or 'done'): ")

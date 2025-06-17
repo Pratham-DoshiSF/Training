@@ -7,7 +7,7 @@ logger = get_logger("script")
 # Thread Configuration
 thread_config = {
     "configurable": {
-        "thread_id": "1234"
+        "thread_id": "12344"
     }
 }
 
