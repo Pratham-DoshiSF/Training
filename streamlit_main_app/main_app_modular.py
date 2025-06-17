@@ -14,7 +14,7 @@ logger = get_logger("StreamlitApp")
 @st.cache_resource
 def get_runner():
     wf = workflow()
-    runner = WorkflowRunner(wf, {"configurable": {"thread_id": "255"}})
+    runner = WorkflowRunner(wf, {"configurable": {"thread_id": "2055"}})
     return runner
 
 runner = get_runner()

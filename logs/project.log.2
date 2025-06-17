@@ -1,0 +1,106 @@
+2025-06-17 15:54:21,827 | DEBUG | HumanRouter | validation_edge.py:13 | [LAST MESSAGE] content='The query "What is ai for explaining non technical terms" is clear enough. It\'s asking about the use of AI in explaining non-technical terms.' additional_kwargs={} response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []} id='run--48615a1a-1d45-4e9d-bf4a-18c4d938f8f7-0' usage_metadata={'input_tokens': 327, 'output_tokens': 33, 'total_tokens': 360, 'input_token_details': {'cache_read': 0}}
+2025-06-17 15:54:21,828 | INFO | HumanRouter | validation_edge.py:20 | No tool_calls found, routing to 'routing'
+2025-06-17 15:54:21,828 | DEBUG | HumanRouter | validation_edge.py:21 | [LAST MSG TO ROUTING] content='The query "What is ai for explaining non technical terms" is clear enough. It\'s asking about the use of AI in explaining non-technical terms.' additional_kwargs={} response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []} id='run--48615a1a-1d45-4e9d-bf4a-18c4d938f8f7-0' usage_metadata={'input_tokens': 327, 'output_tokens': 33, 'total_tokens': 360, 'input_token_details': {'cache_read': 0}}
+2025-06-17 15:56:35,001 | INFO | MongoCheckpointer | in_memory.py:20 | MongoDB checkpointer initialized successfully.
+2025-06-17 15:56:35,424 | INFO | Workflow | workflow.py:34 | Initializing workflow...
+2025-06-17 15:56:35,424 | INFO | Utils | utils.py:18 | Initializing LLM with model: gemini-2.0-flash
+2025-06-17 15:56:35,436 | INFO | Utils | utils.py:32 | Initializing image LLM with model: models/gemini-2.0-flash-preview-image-generation
+2025-06-17 15:56:35,438 | INFO | Utils | utils.py:18 | Initializing LLM with model: gemini-2.0-flash
+2025-06-17 15:56:35,536 | INFO | LLMWithTool | langgraph_utils.py:12 | LLM successfully bound with human_feedback tool.
+2025-06-17 15:56:35,540 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 15:56:35,540 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f3648d8e630> default_metadata=() model_kwargs={} | Tools: [] | Name: llm_expert
+2025-06-17 15:56:35,546 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 15:56:35,547 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f3648d8e630> default_metadata=() model_kwargs={} | Tools: [StructuredTool(name='image_gen_func', description='Generate image and return image path (not base64).', args_schema=<class 'langchain_core.utils.pydantic.image_gen_func'>, func=<function image_tool.<locals>.image_gen_func at 0x7f36490962a0>)] | Name: image_expert
+2025-06-17 15:56:35,554 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 15:56:35,555 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f3648d8e630> default_metadata=() model_kwargs={} | Tools: [StructuredTool(name='tavily_search_tool_func', description='Search the web for up-to-date information using Tavily.', args_schema=<class 'langchain_core.utils.pydantic.tavily_search_tool_func'>, func=<function tavily_search_tool_func at 0x7f3648bba0c0>)] | Name: web_expert
+2025-06-17 15:56:35,555 | INFO | Workflow | workflow.py:44 | Workflow initialized successfully.
+2025-06-17 15:56:35,555 | INFO | Workflow | workflow.py:112 | Initializing WorkflowRunner...
+2025-06-17 15:56:35,557 | INFO | Workflow | workflow.py:100 | Graph created and compiled.
+2025-06-17 15:56:35,561 | INFO | Workflow | workflow.py:116 | WorkflowRunner ready.
+2025-06-17 15:56:38,195 | INFO | Workflow | workflow.py:124 | Handling user query: What is ai for explaining non technical terms
+2025-06-17 15:56:38,581 | DEBUG | ValidationNode | input_validation_node.py:15 | Running validation for query: What is ai for explaining non technical terms
+2025-06-17 15:56:39,628 | INFO | ValidationNode | input_validation_node.py:17 | Validation result obtained successfully
+2025-06-17 15:56:39,629 | DEBUG | ValidationNode | input_validation_node.py:18 | Validation result: content="The query is clear enough. The user is asking about the applications of AI in explaining non-technical terms. I don't need to use the `human_feedback` tool." additional_kwargs={} response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []} id='run--6e4bedc4-04d4-48a1-9a0c-7baf61bd18ef-0' usage_metadata={'input_tokens': 327, 'output_tokens': 38, 'total_tokens': 365, 'input_token_details': {'cache_read': 0}}
+2025-06-17 15:56:40,604 | INFO | RoutingNode | query_routing_node.py:17 | Agent selected by router: llm_agent
+2025-06-17 15:56:40,616 | INFO | Router | routing_edge.py:11 | Routing decision based on last agent: llm_agent
+2025-06-17 15:56:40,635 | INFO | baseagent | llm_search_agent.py:40 | Agent invoked for query: What is ai for explaining non technical terms
+2025-06-17 15:56:40,666 | DEBUG | baseagent | llm_search_agent.py:47 | History (last 5): [AIMessage(content='The query "What is ai in flnaolgna" appears to be asking about the role of AI in something called "flnaolgna". While "flnaolgna" is likely a misspelling or a term I don\'t recognize, the query\'s structure is clear enough to understand the user\'s intent: they want to know how AI is used in a specific context. Therefore, I will proceed without using the `human_feedback` tool.', additional_kwargs={}, response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []}, id='run--2d230eb8-5bd9-4663-984e-b4df845fd7a7-0', usage_metadata={'input_tokens': 327, 'output_tokens': 96, 'total_tokens': 423, 'input_token_details': {'cache_read': 0}}), AIMessage(content='I\'m sorry, I\'m not familiar with "flnaolgna." It might be a misspelling, a specialized term, or something else entirely. Could you clarify what "flnaolgna" refers to?\n\nIf you can tell me what "flnaolgna" is, I can then explain how AI might be used in that context. For example, is it:\n\n*   **A specific industry?** (e.g., "What is AI in *healthcare*?")\n*   **A type of technology?** (e.g., "What is AI in *robotics*?")\n*   **A specific application?** (e.g., "What is AI in *customer service*?")\n*   **A typo for another word?** (e.g., "What is AI in *finance*?")\n\nOnce I understand what you\'re asking about, I can give you a relevant and helpful explanation.', additional_kwargs={}, response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []}, name='llm_expert', id='run--ee270e8e-73c0-42ef-b7d3-13a2426cd3c1-0', usage_metadata={'input_tokens': 612, 'output_tokens': 199, 'total_tokens': 811, 'input_token_details': {'cache_read': 0}}), AIMessage(content='The query "Waewg,qkawg" appears to be nonsensical or garbled text. Therefore, I should use the `human_feedback` tool.', additional_kwargs={'function_call': {'name': 'human_feedback', 'arguments': '{"state": {"query": "Waewg,qkawg", "agent_used": ["default_api"], "messages": ["The query \'Waewg,qkawg\' is nonsensical and requires clarification."]}}'}}, response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []}, id='run--094a3a14-83ee-4125-9334-afd175857560-0', tool_calls=[{'name': 'human_feedback', 'args': {'state': {'query': 'Waewg,qkawg', 'agent_used': ['default_api'], 'messages': ["The query 'Waewg,qkawg' is nonsensical and requires clarification."]}}, 'id': '1196a8fd-790f-4944-865a-65bd16ae56e2', 'type': 'tool_call'}], usage_metadata={'input_tokens': 326, 'output_tokens': 72, 'total_tokens': 398, 'input_token_details': {'cache_read': 0}}), AIMessage(content='The query "What is ai for explaining non technical terms" is clear enough. It\'s asking about the use of AI in explaining non-technical terms.', additional_kwargs={}, response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []}, id='run--48615a1a-1d45-4e9d-bf4a-18c4d938f8f7-0', usage_metadata={'input_tokens': 327, 'output_tokens': 33, 'total_tokens': 360, 'input_token_details': {'cache_read': 0}}), AIMessage(content="The query is clear enough. The user is asking about the applications of AI in explaining non-technical terms. I don't need to use the `human_feedback` tool.", additional_kwargs={}, response_metadata={'prompt_feedback': {'block_reason': 0, 'safety_ratings': []}, 'finish_reason': 'STOP', 'model_name': 'gemini-2.0-flash', 'safety_ratings': []}, id='run--6e4bedc4-04d4-48a1-9a0c-7baf61bd18ef-0', usage_metadata={'input_tokens': 327, 'output_tokens': 38, 'total_tokens': 365, 'input_token_details': {'cache_read': 0}})]
+2025-06-17 15:56:40,865 | ERROR | baseagent | llm_search_agent.py:61 | Error during agent run for query 'What is ai for explaining non technical terms': Found AIMessages with tool_calls that do not have a corresponding ToolMessage. Here are the first few of those tool calls: [{'name': 'human_feedback', 'args': {'state': {'query': 'Waewg,qkawg', 'agent_used': ['default_api'], 'messages': ["The query 'Waewg,qkawg' is nonsensical and requires clarification."]}}, 'id': '1196a8fd-790f-4944-865a-65bd16ae56e2', 'type': 'tool_call'}].
+
+Every tool call (LLM requesting to call a tool) in the message history MUST have a corresponding ToolMessage (result of a tool invocation to return to the LLM) - this is required by most LLM providers.
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/INVALID_CHAT_HISTORY
+2025-06-17 15:56:40,875 | DEBUG | baseagent | llm_search_agent.py:62 | Traceback (most recent call last):
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/conversation_bot/agents/llm_search_agent.py", line 49, in __call__
+    result = chain.invoke({
+             ^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langchain_core/runnables/base.py", line 3047, in invoke
+    input_ = context.run(step.invoke, input_, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2894, in invoke
+    for chunk in self.stream(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2527, in stream
+    for _ in runner.tick(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 499, in call_model
+    state = _get_model_input_state(state)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 488, in _get_model_input_state
+    _validate_chat_history(messages)
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 238, in _validate_chat_history
+    raise ValueError(error_message)
+ValueError: Found AIMessages with tool_calls that do not have a corresponding ToolMessage. Here are the first few of those tool calls: [{'name': 'human_feedback', 'args': {'state': {'query': 'Waewg,qkawg', 'agent_used': ['default_api'], 'messages': ["The query 'Waewg,qkawg' is nonsensical and requires clarification."]}}, 'id': '1196a8fd-790f-4944-865a-65bd16ae56e2', 'type': 'tool_call'}].
+
+Every tool call (LLM requesting to call a tool) in the message history MUST have a corresponding ToolMessage (result of a tool invocation to return to the LLM) - this is required by most LLM providers.
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/INVALID_CHAT_HISTORY
+During task with name 'agent' and id 'a51ee5fe-108a-62b6-b618-176fcd6a7c0a'
+
+2025-06-17 15:56:41,052 | ERROR | Workflow | workflow.py:128 | Error during query handling: Found AIMessages with tool_calls that do not have a corresponding ToolMessage. Here are the first few of those tool calls: [{'name': 'human_feedback', 'args': {'state': {'query': 'Waewg,qkawg', 'agent_used': ['default_api'], 'messages': ["The query 'Waewg,qkawg' is nonsensical and requires clarification."]}}, 'id': '1196a8fd-790f-4944-865a-65bd16ae56e2', 'type': 'tool_call'}].
+
+Every tool call (LLM requesting to call a tool) in the message history MUST have a corresponding ToolMessage (result of a tool invocation to return to the LLM) - this is required by most LLM providers.
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/INVALID_CHAT_HISTORY
+2025-06-17 15:56:41,055 | DEBUG | Workflow | workflow.py:129 | Traceback (most recent call last):
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/conversation_bot/workflow/workflow.py", line 125, in handle_query
+    result = self.app.invoke({"query": query}, config=self.thread_config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2894, in invoke
+    for chunk in self.stream(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2527, in stream
+    for _ in runner.tick(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/conversation_bot/agents/llm_search_agent.py", line 49, in __call__
+    result = chain.invoke({
+             ^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langchain_core/runnables/base.py", line 3047, in invoke
+    input_ = context.run(step.invoke, input_, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2894, in invoke
+    for chunk in self.stream(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/pregel/__init__.py", line 2527, in stream
+    for _ in runner.tick(
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 499, in call_model
+    state = _get_model_input_state(state)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 488, in _get_model_input_state
+    _validate_chat_history(messages)
+  File "/home/pratham.doshi@simform.dom/Desktop/python training/gen_ai/lib/python3.12/site-packages/langgraph/prebuilt/chat_agent_executor.py", line 238, in _validate_chat_history
+    raise ValueError(error_message)
+ValueError: Found AIMessages with tool_calls that do not have a corresponding ToolMessage. Here are the first few of those tool calls: [{'name': 'human_feedback', 'args': {'state': {'query': 'Waewg,qkawg', 'agent_used': ['default_api'], 'messages': ["The query 'Waewg,qkawg' is nonsensical and requires clarification."]}}, 'id': '1196a8fd-790f-4944-865a-65bd16ae56e2', 'type': 'tool_call'}].
+
+Every tool call (LLM requesting to call a tool) in the message history MUST have a corresponding ToolMessage (result of a tool invocation to return to the LLM) - this is required by most LLM providers.
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/INVALID_CHAT_HISTORY
+During task with name 'agent' and id 'a51ee5fe-108a-62b6-b618-176fcd6a7c0a'
+During task with name 'llm generation' and id '8422bdc2-d89c-3860-cd22-65c2e2ec2995'
+
+2025-06-17 16:20:14,643 | INFO | Workflow | workflow.py:34 | Initializing workflow...
+2025-06-17 16:20:14,644 | INFO | Utils | utils.py:18 | Initializing LLM with model: gemini-2.0-flash
+2025-06-17 16:20:14,647 | INFO | Utils | utils.py:32 | Initializing image LLM with model: models/gemini-2.0-flash-preview-image-generation
+2025-06-17 16:20:14,651 | INFO | Utils | utils.py:18 | Initializing LLM with model: gemini-2.0-flash
+2025-06-17 16:20:14,695 | INFO | LLMWithTool | langgraph_utils.py:12 | LLM successfully bound with human_feedback tool.
+2025-06-17 16:20:14,698 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 16:20:14,698 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f366eb36c60> default_metadata=() model_kwargs={} | Tools: [] | Name: llm_expert
+2025-06-17 16:20:14,705 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 16:20:14,706 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f366eb36c60> default_metadata=() model_kwargs={} | Tools: [StructuredTool(name='image_gen_func', description='Generate image and return image path (not base64).', args_schema=<class 'langchain_core.utils.pydantic.image_gen_func'>, func=<function image_tool.<locals>.image_gen_func at 0x7f3614277ec0>)] | Name: image_expert
+2025-06-17 16:20:14,710 | INFO | baseagent | llm_search_agent.py:33 | Agent creation successful
+2025-06-17 16:20:14,711 | INFO | baseagent | llm_search_agent.py:19 | Initialization done | LLM: model='models/gemini-2.0-flash' google_api_key=SecretStr('**********') client=<google.ai.generativelanguage_v1beta.services.generative_service.client.GenerativeServiceClient object at 0x7f366eb36c60> default_metadata=() model_kwargs={} | Tools: [StructuredTool(name='tavily_search_tool_func', description='Search the web for up-to-date information using Tavily.', args_schema=<class 'langchain_core.utils.pydantic.tavily_search_tool_func'>, func=<function tavily_search_tool_func at 0x7f3648bba0c0>)] | Name: web_expert
+2025-06-17 16:20:14,711 | INFO | Workflow | workflow.py:44 | Workflow initialized successfully.
+2025-06-17 16:20:14,711 | INFO | Workflow | workflow.py:112 | Initializing WorkflowRunner...
+2025-06-17 16:20:14,713 | INFO | Workflow | workflow.py:100 | Graph created and compiled.
+2025-06-17 16:20:14,715 | INFO | Workflow | workflow.py:116 | WorkflowRunner ready.

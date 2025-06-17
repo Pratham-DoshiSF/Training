@@ -72,14 +72,13 @@ class workflow:
             graph.add_node("is feedback needed", self.validation_node)
             graph.add_node("routing agent", self.routing_node)
 
-            tool = ToolNode([self.human_feedback_tool])
-            graph.add_node("human_feedback", tool)
+            graph.add_node("human_feedback", self.human_feedback_tool)
 
             graph.add_conditional_edges("is feedback needed",
                                         self.should_continue_validation,
                                         {
                                             "tools": "human_feedback",
-                                            "routing agent": "routing agent"
+                                            "routing": "routing agent"
                                         })
 
             graph.add_edge("human_feedback", "is feedback needed")

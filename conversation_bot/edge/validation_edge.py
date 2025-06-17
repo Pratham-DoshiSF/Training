@@ -7,22 +7,20 @@ logger = get_logger("HumanRouter")
 
 def should_continue_human(state: agentState) -> str:
     try:
-        messages = state.get("messages", [])
-        if not messages:
-            logger.info("No messages found in state. Defaulting to 'routing agent'")
-            return "routing agent"
+        logger.debug("[STATE RECEIVED] %s", state)
 
-        last_message = messages[-1]
-        logger.debug(f"Last message: {last_message}")
+        last_msg = state["messages"][-1] if state["messages"] else [""]
+        logger.debug("[LAST MESSAGE] %s", last_msg)
 
-        if isinstance(last_message, AIMessage) and last_message.tool_calls:
-            logger.info("Detected tool_calls in AIMessage. Routing to 'tools'")
+        if isinstance(last_msg, AIMessage) and last_msg.tool_calls:
+            logger.info("AIMessage contains tool_calls, routing to 'tools'")
+            logger.debug("[LAST MSG TO TOOL] %s", last_msg)
             return "tools"
-
-        logger.info("No tool_calls detected. Routing to 'routing agent'")
-        return "routing agent"
+        else:
+            logger.info("No tool_calls found, routing to 'routing'")
+            logger.debug("[LAST MSG TO ROUTING] %s", last_msg)
+            return "routing"
 
     except Exception as e:
-        logger.error(f"Error in should_continue_human: {e}")
-        logger.debug(traceback.format_exc())
-        return "routing agent"  # Safe fallback
+        logger.exception("Exception in should_continue_human: %s", str(e))
+        return "routing"  # Safe fallback
