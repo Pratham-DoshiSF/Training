@@ -106,12 +106,12 @@ class workflow:
 
 
 class WorkflowRunner:
-    def __init__(self, workflow, thread_config , is_streamlit : bool = False):
+    def __init__(self, workflow, user_id , is_streamlit : bool = False):
         try:
             logger.info("Initializing WorkflowRunner...")
             self.workflow = workflow
             self.app = self.workflow.create_graph()
-            self.thread_config = thread_config
+            self.thread_config = {"configurable": {"thread_id": user_id}}
             self.is_streamlit = is_streamlit
             logger.info("WorkflowRunner ready.")
         except Exception as e:
@@ -188,10 +188,10 @@ class WorkflowRunner:
 
 # ✅ CLI Runner
 if __name__ == "__main__":
-    thread_config = {"configurable": {"thread_id": "123456"}}
+    user_id = "12345688"
     try:
         wf = workflow()
-        runner = WorkflowRunner(wf, thread_config )
+        runner = WorkflowRunner(wf, user_id )
 
         while True:
             query = input("Enter your query (or 'done'): ")

@@ -5,15 +5,11 @@ from conversation_bot.utils_function.logger_utility import get_logger
 logger = get_logger("script")
 
 # Thread Configuration
-thread_config = {
-    "configurable": {
-        "thread_id": "12344"
-    }
-}
+user_id = "16461"
 
 try:
     wf = workflow()
-    runner = WorkflowRunner(wf, thread_config)
+    runner = WorkflowRunner(wf, user_id)
 
     while True:
         query = input("Enter your query (or 'done'): ")

@@ -16,7 +16,7 @@ st.title("🧠 LangGraph Multi-Agent Chatbot")
 # Initialize session state
 if "runner" not in st.session_state:
     wf = workflow()
-    st.session_state.runner = WorkflowRunner(wf, {"configurable": {"thread_id": user_id}} ,True)
+    st.session_state.runner = WorkflowRunner(wf, user_id ,True)
     st.session_state.chat_history = []
     st.session_state.awaiting_feedback = False
     st.session_state.last_result = None
