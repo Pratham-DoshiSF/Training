@@ -16,7 +16,7 @@ class baseagent:
 
         try:
             self.create_agent()
-            self.logger.info(f"Initialization done | LLM: {llm} | Tools: {tools} | Name: {name}")
+            self.logger.info(f"Initialization done | LLM: {llm} | Tools: {tools} | Name: {name} | Instruction: {instruction} ")
         except Exception as e:
             self.logger.error(f"Agent initialization failed: {e}")
             self.logger.debug(traceback.format_exc())

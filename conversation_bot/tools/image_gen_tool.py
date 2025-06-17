@@ -15,7 +15,8 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 def image_tool(image_llm):
     @tool
     def image_gen_func(query: str) -> str:
-        """Generate image and return image path (not base64)."""
+        """Always use this tool to Generate image and return image path (not base64)."""
+        logger.info("ENTERING IMAGE TOOL")
         try:
             enhanced_query = (
                 "Create an image illustrating the following concept:\n\n"

@@ -1,7 +1,6 @@
 import traceback
 from PIL import Image
 from langgraph.graph import StateGraph, END
-from langgraph.prebuilt import ToolNode
 from langgraph.types import Command
 
 from conversation_bot.utils_function.logger_utility import get_logger
@@ -17,15 +16,15 @@ from conversation_bot.utils_function.langgraph_utils import get_llm_with_tool
 from conversation_bot.tools.human_feedback_tool import human_feedback
 from conversation_bot.tools.image_gen_tool import image_tool
 from conversation_bot.tools.web_search_tool import tavily_search_tool_func
-from conversation_bot.prompts.system_prompt_image import image_system_prompt
+
 
 logger = get_logger("Workflow")
 
 thread_config = {"configurable": {"thread_id": "2555"}}
 
 instruction = (
-    "When generating final answer always return image path without any extras "
-    "for example **generated_images/bcfc234dca554652a72a456177d97ee9.png**"
+    "Always use image_gen_tool before answering"
+    "The output from tool will be path so use that path and return that path without any extras "
 )
 
 class workflow:
@@ -53,7 +52,7 @@ class workflow:
 
     def setup_agents(self):
         self.llm_agent = baseagent(self.llm, [], "llm_expert")
-        self.image_agent = baseagent(self.llm, [self.image_gen_tool], "image_expert", instruction=instruction)
+        self.image_agent = baseagent(self.llm, [self.image_gen_tool], "Image_Generation", instruction=instruction)
         self.web_agent = baseagent(self.llm, [tavily_search_tool_func], "web_expert")
 
     def setup_node(self):
