@@ -8,10 +8,8 @@ This project is a modular GenAI-powered conversational bot platform with support
 
 ```
 .
-├── app/                    # Core application logic
-├── conversation_bot/       # Conversational bot logic and components
-├── extras/                 # Optional utilities, prompts, and extras
-├── gen_ai/                 # GenAI integration modules (e.g., LLMs, embeddings)
+├── app/                    # Fastapi Logic
+├── conversation_bot/       # Main logic for multi-agent system
 ├── generated_images/       # Output folder for generated visual content
 ├── logs/                   # Runtime logs and metadata
 ├── notebook/               # Jupyter notebooks for experiments
@@ -19,7 +17,6 @@ This project is a modular GenAI-powered conversational bot platform with support
 ├── sample.env              # Sample environment config (copy to `.env`)
 ├── scripts/                # Scripts to run the bot locally
 ├── streamlit_app/          # Streamlit frontend UI components
-└── __init__.py             # Package init
 ```
 
 ---
