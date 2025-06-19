@@ -22,4 +22,4 @@ try:
 except Exception as e:
     logger.error(f"Failed to initialize MongoDB checkpointer: {e}")
     logger.debug(traceback.format_exc())
-    checkpointer = None  # Optional: fallback strategy
+    checkpointer = None  

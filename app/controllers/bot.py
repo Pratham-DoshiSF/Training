@@ -1,81 +1,60 @@
-import logging
-import uuid
-from typing import List
+from typing import Dict
 
-from fastapi import APIRouter , HTTPException 
-from langchain_core.messages import ToolMessage
-from app.utils.constant import API_QUERY
-from app.schemas.bot import QueryInput , FeedbackInput
+from fastapi import HTTPException, APIRouter
+from fastapi.responses import JSONResponse
+
+from app.schemas.bot import QueryRequest, FeedbackRequest
+from conversation_bot.workflow.workflow import workflow, WorkflowRunner
 from conversation_bot.utils_function.logger_utility import get_logger
-from conversation_bot.workflow.workflow import workflow , WorkflowRunner
-
-bot_router = APIRouter()
-user_id = str(uuid.uuid4)
-wf = workflow()
-runner = WorkflowRunner(wf ,user_id , True)
 
 logger = get_logger("FastAPI")
-
-# In-memory session management
-session_state = {
-    "runner": None,
-    "awaiting_feedback": False,
-    "tool_call_id": None,
-    "last_query": ""
-}
+bot_router = APIRouter()
 
 wf = workflow()
-session_state["runner"] = WorkflowRunner(wf, "12354566")
+
+runner_store: Dict[str, WorkflowRunner] = {}
 
 @bot_router.post("/query")
-def handle_query(input_data: QueryInput):
+def handle_query(req: QueryRequest):
     try:
-        result = session_state["runner"].handle_query(input_data.query)
+        if req.user_id not in runner_store:
+            runner = WorkflowRunner(wf, req.user_id, True)
+            runner_store[req.user_id] = runner
+        else:
+            runner = runner_store[req.user_id]
 
-        if "__interrupt__" in result:
-            tool_call = result["messages"][-1].tool_calls[0]
-            session_state["awaiting_feedback"] = True
-            session_state["tool_call_id"] = tool_call["id"]
-            session_state["last_query"] = input_data.query
+        result = runner.handle_query(req.query)
 
-            clarification = tool_call["args"]["state"].get("messages", ["Clarification required"])[0]
-            return {
-                "status": "awaiting_feedback",
-                "clarification": clarification
-            }
+        if runner.check_for_interrupt():
+            return JSONResponse(
+                status_code=206,
+                content={"status": "interrupted", "message": "Human input required."}
+            )
 
-        return {
-            "status": "completed",
-            "response": result["messages"][-1].content
-        }
+        return {"status": "complete", "result": result["messages"][-1].content}
 
     except Exception as e:
-        logger.error("Error in /query endpoint", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error("Error in /query", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
 
 @bot_router.post("/feedback")
-def provide_feedback(input_data: FeedbackInput):
-    if not session_state["awaiting_feedback"]:
-        raise HTTPException(status_code=400, detail="No feedback expected at the moment.")
-
+def handle_feedback(req: FeedbackRequest):
     try:
-        tool_msg = ToolMessage(
-            tool_call_id=session_state["tool_call_id"],
-            content=input_data.feedback
-        )
+        runner = runner_store.get(req.user_id)
+        if not runner:
+            raise HTTPException(status_code=404, detail="Session not found. Start with /query first.")
 
-        result = session_state["runner"].resume_with_feedback(tool_msg)
+        result = runner.resume_with_feedback(req.feedback)
 
-        # Reset state
-        session_state["awaiting_feedback"] = False
-        session_state["tool_call_id"] = None
-        session_state["last_query"] = ""
+        if runner.check_for_interrupt():
+            return JSONResponse(
+                status_code=206,
+                content={"status": "interrupted", "message": "Further clarification needed."}
+            )
 
-        return {
-            "status": "completed",
-            "response": result["messages"][-1].content
-        }
+        return {"status": "complete", "result": result["messages"][-1].content}
 
     except Exception as e:
-        logger.error("Error in /feedback endpoint", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error("Error in /feedback", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal Server Error")

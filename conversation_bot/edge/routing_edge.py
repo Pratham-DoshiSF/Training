@@ -23,4 +23,4 @@ def should_continue(state: agentState) -> str:
     except Exception as e:
         logger.error(f"Error in router logic: {e}")
         logger.debug(traceback.format_exc())
-        return "llm_agent"  # Fallback to prevent graph crash
+        return "llm_agent"  

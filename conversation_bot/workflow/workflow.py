@@ -9,7 +9,7 @@ from conversation_bot.state_schema.graph_state import agentState
 from conversation_bot.memory.in_memory import checkpointer
 from conversation_bot.edge.routing_edge import should_continue
 from conversation_bot.edge.validation_edge import should_continue_human
-from conversation_bot.agents.llm_search_agent import baseagent
+from conversation_bot.agents.base_agent import baseagent
 from conversation_bot.node.input_validation_node import get_validation_node
 from conversation_bot.node.query_routing_node import get_routing_node
 from conversation_bot.utils_function.utils import get_llm, get_image_llm
@@ -17,15 +17,13 @@ from conversation_bot.utils_function.langgraph_utils import get_llm_with_tool
 from conversation_bot.tools.human_feedback_tool import human_feedback
 from conversation_bot.tools.image_gen_tool import image_tool
 from conversation_bot.tools.web_search_tool import tavily_search_tool_func
+from conversation_bot.prompts.image_agent_prompt import instruction
 
 
 logger = get_logger("Workflow")
 
 
-instruction = (
-    "Always use image_gen_tool before answering"
-    "The output from tool will be path so use that path and return that path without any extras "
-)
+
 
 class workflow:
     def __init__(self):
@@ -33,7 +31,7 @@ class workflow:
             logger.info("Initializing workflow...")
             self.llm = get_llm()
             self.image_llm = get_image_llm()
-            self.llm_With_tool = get_llm_with_tool()
+            self.llm_With_tool = get_llm_with_tool(self.llm)
             self.checkpointer = checkpointer
 
             self.setup_tool()
@@ -137,8 +135,6 @@ class WorkflowRunner:
     def resume_with_feedback(self, feedback: str):
         try:
             logger.info(f"Resuming with human feedback: {feedback}")
-            # Save the clarified feedback back as the updated query in the config
-            # self.thread_config["configurable"]["query"] = feedback
 
             result = self.app.invoke(Command(resume=feedback), config=self.thread_config)
             return self._handle_result(result)
@@ -164,7 +160,7 @@ class WorkflowRunner:
             last_message = result["messages"][-1] if "messages" in result else None
 
             if "__interrupt__" in result:
-                logger.warning("🔁 Awaiting human feedback...")
+                logger.warning(" Awaiting human feedback...")
                 print(result["__interrupt__"][-1].value)
 
             elif last_agent == "image_agent" and "png" in last_message.content:
@@ -175,8 +171,8 @@ class WorkflowRunner:
                     Image.open(image_path).show()
 
             else:
-                logger.info(f"[💬 RESPONSE] {last_message.content}")
-                print("[💬 Response]:", last_message)
+                logger.info(f"[ RESPONSE] {last_message.content}")
+                print("[ Response]:", last_message)
 
             return result
 
@@ -186,7 +182,6 @@ class WorkflowRunner:
             return {"error": str(e)}
 
 
-# ✅ CLI Runner
 if __name__ == "__main__":
     user_id = "12345688"
     try:

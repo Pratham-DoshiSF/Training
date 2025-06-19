@@ -1,7 +1,9 @@
+import traceback
+
 from langchain_tavily import TavilySearch
 from langchain_core.tools import tool
+
 from conversation_bot.utils_function.logger_utility import get_logger
-import traceback
 
 logger = get_logger("TavilySearchTool")
 

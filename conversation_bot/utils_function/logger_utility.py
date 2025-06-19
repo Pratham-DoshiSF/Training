@@ -1,21 +1,17 @@
-# logger_factory.py
+import os
 import logging
 from logging.handlers import RotatingFileHandler
-import os
 
-LOG_DIR = "logs"
-LOG_FILE = "project.log"
+from conversation_bot.constants.constant import LOG_DIR , LOG_FILE
+
 os.makedirs(LOG_DIR, exist_ok=True)
 
 def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)
 
     if logger.handlers:
-        return logger  # Avoid duplicate handlers
-
-    logger.setLevel(logging.DEBUG)  # You can control this with ENV later
-
-    # Console handler
+        return logger 
+    logger.setLevel(logging.DEBUG)  
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_format = logging.Formatter(
@@ -23,10 +19,9 @@ def get_logger(name: str) -> logging.Logger:
     )
     console_handler.setFormatter(console_format)
 
-    # Rotating file handler
     file_handler = RotatingFileHandler(
         os.path.join(LOG_DIR, LOG_FILE),
-        maxBytes=5_000_000,  # 5 MB
+        maxBytes=5_000_000, 
         backupCount=5
     )
     file_handler.setLevel(logging.DEBUG)

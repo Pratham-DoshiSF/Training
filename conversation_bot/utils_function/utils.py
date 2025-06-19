@@ -1,9 +1,10 @@
 import os
-import re
-from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
-from conversation_bot.utils_function.logger_utility import get_logger
 import traceback
+from dotenv import load_dotenv
+
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+from conversation_bot.utils_function.logger_utility import get_logger
 
 load_dotenv()
 logger = get_logger("Utils")
@@ -36,15 +37,3 @@ def get_image_llm():
         logger.debug(traceback.format_exc())
         raise e
 
-def extract_image_path(text: str) -> str | None:
-    """
-    Extracts the image file path if present in the string.
-
-    Example match: generated_images/uuid.png
-    """
-    match = re.search(r"(generated_images/\S+\.png)", text)
-    if match:
-        logger.info(f"Extracted image path: {match.group(1)}")
-    else:
-        logger.warning("No image path found in provided text.")
-    return match.group(1) if match else None

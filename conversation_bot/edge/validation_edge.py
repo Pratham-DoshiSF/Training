@@ -23,4 +23,4 @@ def should_continue_human(state: agentState) -> str:
 
     except Exception as e:
         logger.exception("Exception in should_continue_human: %s", str(e))
-        return "routing"  # Safe fallback
+        return "routing"

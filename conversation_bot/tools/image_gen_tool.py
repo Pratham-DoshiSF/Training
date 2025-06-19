@@ -1,15 +1,15 @@
-from langchain_core.tools import tool
-from pathlib import Path
-import uuid
 import base64
-from langchain_core.messages import HumanMessage
-from conversation_bot.utils_function.utils import get_image_llm
-from conversation_bot.utils_function.logger_utility import get_logger
+import uuid
 import traceback
+
+from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage
+
+from conversation_bot.constants.constant import OUTPUT_DIR
+from conversation_bot.utils_function.logger_utility import get_logger
 
 logger = get_logger("ImageTool")
 
-OUTPUT_DIR = Path("generated_images")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 def image_tool(image_llm):
