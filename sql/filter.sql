@@ -1,1 +1,0 @@
-SELECT * FROM departments WHERE departmentname = 'HR';

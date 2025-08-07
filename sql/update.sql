@@ -1,1 +1,0 @@
-UPDATE departments SET departmentid = 01 WHERE departmentid =1;
